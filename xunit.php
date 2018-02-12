@@ -6,8 +6,21 @@
  * Time: 13:18
  */
 
+/**
+ * Class TestCase
+ */
 class TestCase
 {
+    public $name;
+
+    /**
+     * TestCase constructor.
+     * @param $name
+     */
+    public function __construct($name)
+    {
+        $this->name = $name;
+    }
 }
 
 /**
@@ -16,7 +29,6 @@ class TestCase
 class WasRun extends TestCase
 {
     public $wasRun;
-    public $name;
 
     /**
      * WasRun constructor.
@@ -25,7 +37,7 @@ class WasRun extends TestCase
     public function __construct($name)
     {
         $this->wasRun = false;
-        $this->name = $name;
+        parent::__construct($name);
     }
 
     public function testMethod()
