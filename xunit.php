@@ -31,8 +31,12 @@ class TestCase
         $result = new TestResult();
         $result->testStarted();
         $this->setUp();
-        $method = $this->name;
-        $this->$method();
+        try {
+            $method = $this->name;
+            $this->$method();
+        } catch (Exception $e) {
+            $result->testFailed();
+        }
         $this->tearDown();
         return $result;
     }
@@ -77,10 +81,12 @@ class WasRun extends TestCase
 class TestResult
 {
     private $runCount;
+    private $errorCount;
 
     public function __construct()
     {
         $this->runCount = 0;
+        $this->errorCount = 0;
     }
 
     public function testStarted()
@@ -88,9 +94,14 @@ class TestResult
         $this->runCount = $this->runCount + 1;
     }
 
+    public function testFailed()
+    {
+        $this->errorCount = $this->errorCount + 1;
+    }
+
     public function summary()
     {
-        return sprintf("%d run, 0 faild", $this->runCount);
+        return sprintf("%d run, %d failed", $this->runCount, $this->errorCount);
     }
 }
 
@@ -110,7 +121,7 @@ class TestCaseTest extends TestCase
     {
         $test = new WasRun("testMethod");
         $result = $test->run();
-        assert("1 run, 0 faild" == $result->summary());
+        assert("1 run, 0 failed" == $result->summary());
     }
 
     public function testFailedResult()
@@ -119,8 +130,17 @@ class TestCaseTest extends TestCase
         $result = $test->run();
         assert("1 run, 1 failed" == $result->summary());
     }
+
+    public function testFailedResultFormatting()
+    {
+        $result = new TestResult();
+        $result->testStarted();
+        $result->testFailed();
+        assert("1 run, 1 failed" == $result->summary());
+    }
 }
 
-(new TestCaseTest("testTemplateMethod"))->run();
-(new TestCaseTest("testResult"))->run();
-# (new TestCaseTest("testFailedResult"))->run();
+(new TestCaseTest("testTemplateMethod"))->run()->summary();
+(new TestCaseTest("testResult"))->run()->summary();
+(new TestCaseTest("testFailedResult"))->run()->summary();
+(new TestCaseTest("testFailedResultFormatting"))->run()->summary();
