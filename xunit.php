@@ -53,6 +53,6 @@ class WasRun extends TestCase
 }
 
 $test = new WasRun("testMethod");
-print ($test->wasRun);
+var_dump($test->wasRun);
 $test->run();
-print ($test->wasRun);
+var_dump($test->wasRun);
