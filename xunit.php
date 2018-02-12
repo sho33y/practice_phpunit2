@@ -42,7 +42,7 @@ class WasRun extends TestCase
      */
     public function __construct($name)
     {
-        $this->wasRun = false;
+        $this->wasRun = null;
         parent::__construct($name);
     }
 
