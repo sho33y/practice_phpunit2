@@ -32,6 +32,7 @@ class TestCase
         $method = $this->name;
         $this->$method();
         $this->tearDown();
+        return new TestResult();
     }
 
     public function tearDown()
@@ -60,6 +61,17 @@ class WasRun extends TestCase
     public function tearDown()
     {
         $this->log = $this->log . "tearDown ";
+    }
+}
+
+/**
+ * Class TestResult
+ */
+class TestResult
+{
+    public function summary()
+    {
+        return "1 run, 0 faild";
     }
 }
 
