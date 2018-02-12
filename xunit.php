@@ -28,10 +28,13 @@ class TestCase
 
     public function run()
     {
+        $result = new TestResult();
+        $result->testStarted();
         $this->setUp();
         $method = $this->name;
         $this->$method();
         $this->tearDown();
+        return $result;
     }
 
     public function tearDown()
@@ -61,6 +64,34 @@ class WasRun extends TestCase
     {
         $this->log = $this->log . "tearDown ";
     }
+
+    public function testBrokenMethod()
+    {
+        throw new Exception();
+    }
+}
+
+/**
+ * Class TestResult
+ */
+class TestResult
+{
+    private $runCount;
+
+    public function __construct()
+    {
+        $this->runCount = 0;
+    }
+
+    public function testStarted()
+    {
+        $this->runCount = $this->runCount + 1;
+    }
+
+    public function summary()
+    {
+        return sprintf("%d run, 0 faild", $this->runCount);
+    }
 }
 
 /**
@@ -74,6 +105,22 @@ class TestCaseTest extends TestCase
         $test->run();
         assert("setUp testMethod tearDown " == $test->log);
     }
+
+    public function testResult()
+    {
+        $test = new WasRun("testMethod");
+        $result = $test->run();
+        assert("1 run, 0 faild" == $result->summary());
+    }
+
+    public function testFailedResult()
+    {
+        $test = new WasRun("testBrokenMethod");
+        $result = $test->run();
+        assert("1 run, 1 failed" == $result->summary());
+    }
 }
 
 (new TestCaseTest("testTemplateMethod"))->run();
+(new TestCaseTest("testResult"))->run();
+# (new TestCaseTest("testFailedResult"))->run();
