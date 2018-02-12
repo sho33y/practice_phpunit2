@@ -28,9 +28,14 @@ class WasRun extends TestCase
     {
         $this->wasRun = 1;
     }
+
+    public function run()
+    {
+        $this->testMethod();
+    }
 }
 
 $test = new WasRun("testMethod");
 print ($test->wasRun);
-$test->testMethod();
+$test->run();
 print ($test->wasRun);
