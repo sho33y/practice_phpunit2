@@ -14,6 +14,7 @@ use PHPUnit\Framework\TestCase;
 class WasRun extends TestCase
 {
     public $wasRun;
+    public $name;
 
     /**
      * WasRun constructor.
@@ -22,6 +23,7 @@ class WasRun extends TestCase
     public function __construct($name)
     {
         $this->wasRun = false;
+        $this->name = $name;
     }
 
     public function testMethod()
@@ -31,7 +33,8 @@ class WasRun extends TestCase
 
     public function run()
     {
-        $this->testMethod();
+        $method = $this->name;
+        $this->$method();
     }
 }
 
