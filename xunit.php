@@ -6,7 +6,9 @@
  * Time: 13:18
  */
 
-class WasRun {
+class WasRun
+{
+    public $wasRun;
 
     /**
      * WasRun constructor.
@@ -14,6 +16,7 @@ class WasRun {
      */
     public function __construct($name)
     {
+        $this->wasRun = false;
     }
 }
 
