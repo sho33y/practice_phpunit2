@@ -7,7 +7,14 @@
  */
 
 class WasRun {
-    
+
+    /**
+     * WasRun constructor.
+     * @param $name
+     */
+    public function __construct($name)
+    {
+    }
 }
 
 $test = new WasRun("testMethod");
