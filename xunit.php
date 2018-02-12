@@ -69,9 +69,21 @@ class WasRun extends TestCase
  */
 class TestResult
 {
+    private $runCount;
+
+    public function __construct()
+    {
+        $this->runCount = 0;
+    }
+
+    public function testStarted()
+    {
+        $this->runCount = $this->runCount + 1;
+    }
+
     public function summary()
     {
-        return "1 run, 0 faild";
+        return sprintf("%d run, 0 faild", $this->runCount);
     }
 }
 
