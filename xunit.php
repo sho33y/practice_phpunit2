@@ -6,7 +6,9 @@
  * Time: 13:18
  */
 
-use PHPUnit\Framework\TestCase;
+class TestCase
+{
+}
 
 /**
  * Class WasRun
