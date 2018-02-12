@@ -121,6 +121,15 @@ class TestSuite
     {
         $this->tests[] = $test;
     }
+
+    public function run()
+    {
+        $result = new TestResult();
+        foreach ($this->tests as $test) {
+            $test->run($result);
+        }
+        return $result;
+    }
 }
 
 /**
