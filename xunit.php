@@ -59,18 +59,23 @@ class WasRun extends TestCase
  */
 class TestCaseTest extends TestCase
 {
+    private $test;
+
+    public function setUp()
+    {
+        $this->test = new WasRun("testMethod");
+    }
+
     public function testRunning()
     {
-        $test = new WasRun("testMethod");
-        $test->run();
-        assert($test->wasRun);
+        $this->test->run();
+        assert($this->test->wasRun);
     }
 
     public function testSetUp()
     {
-        $test = new WasRun("testMethod");
-        $test->run();
-        assert($test->wasSetUp);
+        $this->test->run();
+        assert($this->test->wasSetUp);
     }
 }
 
