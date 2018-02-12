@@ -41,25 +41,16 @@ class WasRun extends TestCase
 {
     public $wasRun;
     public $wasSetUp;
-
-    /**
-     * WasRun constructor.
-     * @param $name
-     */
-    public function __construct($name)
+    
+    public function setUp()
     {
         $this->wasRun = null;
-        parent::__construct($name);
+        $this->wasSetUp = 1;
     }
 
     public function testMethod()
     {
         $this->wasRun = 1;
-    }
-
-    public function setUp()
-    {
-        $this->wasSetUp = 1;
     }
 }
 
