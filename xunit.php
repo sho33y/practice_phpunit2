@@ -26,9 +26,8 @@ class TestCase
     {
     }
 
-    public function run()
+    public function run($result)
     {
-        $result = new TestResult();
         $result->testStarted();
         $this->setUp();
         try {
@@ -38,7 +37,6 @@ class TestCase
             $result->testFailed();
         }
         $this->tearDown();
-        return $result;
     }
 
     public function tearDown()
@@ -122,13 +120,11 @@ class TestSuite
         $this->tests[] = $test;
     }
 
-    public function run()
+    public function run($result)
     {
-        $result = new TestResult();
         foreach ($this->tests as $test) {
             $test->run($result);
         }
-        return $result;
     }
 }
 
@@ -171,13 +167,19 @@ class TestCaseTest extends TestCase
         $suite = new TestSuite();
         $suite->add(new WasRun("testMethod"));
         $suite->add(new WasRun("testBrokenMethod"));
-        $result = $suite->run();
+        $result = new TestResult();
+        $suite->run($result);
         assert("2 run, 1 failed" == $result->summary());
     }
 }
 
-(new TestCaseTest("testTemplateMethod"))->run()->summary();
-(new TestCaseTest("testResult"))->run()->summary();
-(new TestCaseTest("testFailedResult"))->run()->summary();
-(new TestCaseTest("testFailedResultFormatting"))->run()->summary();
-(new TestCaseTest("testSuite"))->run()->summary();
+$suite = new TestSuite();
+$suite->add(new TestCaseTest("testTemplateMethod"));
+$suite->add(new TestCaseTest("testResult"));
+$suite->add(new TestCaseTest("testFailedResult"));
+$suite->add(new TestCaseTest("testFailedResultFormatting"));
+$suite->add(new TestCaseTest("testSuite"));
+$result = new TestResult();
+$suite->run($result);
+var_dump($result->summary());
+
