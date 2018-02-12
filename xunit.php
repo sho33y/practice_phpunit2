@@ -21,6 +21,12 @@ class TestCase
     {
         $this->name = $name;
     }
+
+    public function run()
+    {
+        $method = $this->name;
+        $this->$method();
+    }
 }
 
 /**
@@ -43,12 +49,6 @@ class WasRun extends TestCase
     public function testMethod()
     {
         $this->wasRun = 1;
-    }
-
-    public function run()
-    {
-        $method = $this->name;
-        $this->$method();
     }
 }
 
