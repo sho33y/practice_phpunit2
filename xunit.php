@@ -22,8 +22,13 @@ class TestCase
         $this->name = $name;
     }
 
+    public function setUp()
+    {
+    }
+
     public function run()
     {
+        $this->setUp();
         $method = $this->name;
         $this->$method();
     }
@@ -35,6 +40,7 @@ class TestCase
 class WasRun extends TestCase
 {
     public $wasRun;
+    public $wasSetUp;
 
     /**
      * WasRun constructor.
@@ -49,6 +55,11 @@ class WasRun extends TestCase
     public function testMethod()
     {
         $this->wasRun = 1;
+    }
+
+    public function setUp()
+    {
+        $this->wasSetUp = 1;
     }
 }
 
@@ -69,7 +80,7 @@ class TestCaseTest extends TestCase
     {
         $test = new WasRun("testMethod");
         $test->run();
-        assert($test->wasSetUp());
+        assert($test->wasSetUp);
     }
 }
 
