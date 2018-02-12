@@ -26,9 +26,8 @@ class TestCase
     {
     }
 
-    public function run()
+    public function run($result)
     {
-        $result = new TestResult();
         $result->testStarted();
         $this->setUp();
         try {
@@ -38,7 +37,6 @@ class TestCase
             $result->testFailed();
         }
         $this->tearDown();
-        return $result;
     }
 
     public function tearDown()
@@ -106,41 +104,87 @@ class TestResult
 }
 
 /**
+ * Class TestSuite
+ */
+class TestSuite
+{
+    private $tests;
+
+    public function __construct()
+    {
+        $this->tests = [];
+    }
+
+    public function add($test)
+    {
+        $this->tests[] = $test;
+    }
+
+    public function run($result)
+    {
+        foreach ($this->tests as $test) {
+            $test->run($result);
+        }
+    }
+}
+
+/**
  * Class TestCaseTest
  */
 class TestCaseTest extends TestCase
 {
+    private $result;
+
+    public function setUp()
+    {
+        $this->result = new TestResult();
+    }
+
     public function testTemplateMethod()
     {
         $test = new WasRun("testMethod");
-        $test->run();
+        $test->run($this->result);
         assert("setUp testMethod tearDown " == $test->log);
     }
 
     public function testResult()
     {
         $test = new WasRun("testMethod");
-        $result = $test->run();
-        assert("1 run, 0 failed" == $result->summary());
+        $test->run($this->result);
+        assert("1 run, 0 failed" == $this->result->summary());
     }
 
     public function testFailedResult()
     {
         $test = new WasRun("testBrokenMethod");
-        $result = $test->run();
-        assert("1 run, 1 failed" == $result->summary());
+        $test->run($this->result);
+        assert("1 run, 1 failed" == $this->result->summary());
     }
 
     public function testFailedResultFormatting()
     {
-        $result = new TestResult();
-        $result->testStarted();
-        $result->testFailed();
-        assert("1 run, 1 failed" == $result->summary());
+        $this->result->testStarted();
+        $this->result->testFailed();
+        assert("1 run, 1 failed" == $this->result->summary());
+    }
+
+    public function testSuite()
+    {
+        $suite = new TestSuite();
+        $suite->add(new WasRun("testMethod"));
+        $suite->add(new WasRun("testBrokenMethod"));
+        $suite->run($this->result);
+        assert("2 run, 1 failed" == $this->result->summary());
     }
 }
 
-(new TestCaseTest("testTemplateMethod"))->run()->summary();
-(new TestCaseTest("testResult"))->run()->summary();
-(new TestCaseTest("testFailedResult"))->run()->summary();
-(new TestCaseTest("testFailedResultFormatting"))->run()->summary();
+$suite = new TestSuite();
+$suite->add(new TestCaseTest("testTemplateMethod"));
+$suite->add(new TestCaseTest("testResult"));
+$suite->add(new TestCaseTest("testFailedResult"));
+$suite->add(new TestCaseTest("testFailedResultFormatting"));
+$suite->add(new TestCaseTest("testSuite"));
+$result = new TestResult();
+$suite->run($result);
+var_dump($result->summary());
+
