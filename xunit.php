@@ -6,7 +6,12 @@
  * Time: 13:18
  */
 
-class WasRun
+use PHPUnit\Framework\TestCase;
+
+/**
+ * Class WasRun
+ */
+class WasRun extends TestCase
 {
     public $wasRun;
 
