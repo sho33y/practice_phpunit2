@@ -106,6 +106,24 @@ class TestResult
 }
 
 /**
+ * Class TestSuite
+ */
+class TestSuite
+{
+    private $tests;
+
+    public function __construct()
+    {
+        $this->tests = [];
+    }
+
+    public function add($test)
+    {
+        $this->tests[] = $test;
+    }
+}
+
+/**
  * Class TestCaseTest
  */
 class TestCaseTest extends TestCase
