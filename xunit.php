@@ -138,9 +138,19 @@ class TestCaseTest extends TestCase
         $result->testFailed();
         assert("1 run, 1 failed" == $result->summary());
     }
+
+    public function testSuite()
+    {
+        $suite = new TestSuite();
+        $suite->add(new WasRun("testMethod"));
+        $suite->add(new WasRun("testBrokenMethod"));
+        $result = $suite->run();
+        assert("2 run, 1 failed" == $result->summary());
+    }
 }
 
 (new TestCaseTest("testTemplateMethod"))->run()->summary();
 (new TestCaseTest("testResult"))->run()->summary();
 (new TestCaseTest("testFailedResult"))->run()->summary();
 (new TestCaseTest("testFailedResultFormatting"))->run()->summary();
+(new TestCaseTest("testSuite"))->run()->summary();
