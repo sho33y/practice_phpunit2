@@ -77,10 +77,12 @@ class WasRun extends TestCase
 class TestResult
 {
     private $runCount;
+    private $errorCount;
 
     public function __construct()
     {
         $this->runCount = 0;
+        $this->errorCount = 0;
     }
 
     public function testStarted()
@@ -88,9 +90,14 @@ class TestResult
         $this->runCount = $this->runCount + 1;
     }
 
+    public function testFailed()
+    {
+        $this->errorCount = $this->errorCount + 1;
+    }
+
     public function summary()
     {
-        return sprintf("%d run, 0 faild", $this->runCount);
+        return sprintf("%d run, %d faild", $this->runCount, $this->errorCount);
     }
 }
 
