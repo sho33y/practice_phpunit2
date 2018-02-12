@@ -28,11 +28,13 @@ class TestCase
 
     public function run()
     {
+        $result = new TestResult();
+        $result->testStarted();
         $this->setUp();
         $method = $this->name;
         $this->$method();
         $this->tearDown();
-        return new TestResult();
+        return $result;
     }
 
     public function tearDown()
