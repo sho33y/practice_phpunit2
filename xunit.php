@@ -23,6 +23,11 @@ class WasRun extends TestCase
     {
         $this->wasRun = false;
     }
+
+    public function testMethod()
+    {
+        $this->wasRun = 1;
+    }
 }
 
 $test = new WasRun("testMethod");
