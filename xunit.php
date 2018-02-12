@@ -6,6 +6,10 @@
  * Time: 13:18
  */
 
+class WasRun {
+    
+}
+
 $test = new WasRun("testMethod");
 print ($test->wasRun);
 $test->testMethod();
