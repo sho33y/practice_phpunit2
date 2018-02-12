@@ -39,13 +39,11 @@ class TestCase
  */
 class WasRun extends TestCase
 {
-    public $wasRun;
     public $wasSetUp;
     public $log;
     
     public function setUp()
     {
-        $this->wasRun = null;
         $this->log = "setUp ";
     }
 
