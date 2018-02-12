@@ -31,8 +31,12 @@ class TestCase
         $result = new TestResult();
         $result->testStarted();
         $this->setUp();
-        $method = $this->name;
-        $this->$method();
+        try {
+            $method = $this->name;
+            $this->$method();
+        } catch (Exception $e) {
+            $result->testFailed();
+        }
         $this->tearDown();
         return $result;
     }
@@ -97,7 +101,7 @@ class TestResult
 
     public function summary()
     {
-        return sprintf("%d run, %d faild", $this->runCount, $this->errorCount);
+        return sprintf("%d run, %d failed", $this->runCount, $this->errorCount);
     }
 }
 
@@ -117,7 +121,7 @@ class TestCaseTest extends TestCase
     {
         $test = new WasRun("testMethod");
         $result = $test->run();
-        assert("1 run, 0 faild" == $result->summary());
+        assert("1 run, 0 failed" == $result->summary());
     }
 
     public function testFailedResult()
@@ -136,7 +140,7 @@ class TestCaseTest extends TestCase
     }
 }
 
-(new TestCaseTest("testTemplateMethod"))->run();
-(new TestCaseTest("testResult"))->run();
-# (new TestCaseTest("testFailedResult"))->run();
-(new TestCaseTest("testFailedResultFormatting"))->run();
+(new TestCaseTest("testTemplateMethod"))->run()->summary();
+(new TestCaseTest("testResult"))->run()->summary();
+(new TestCaseTest("testFailedResult"))->run()->summary();
+(new TestCaseTest("testFailedResultFormatting"))->run()->summary();
